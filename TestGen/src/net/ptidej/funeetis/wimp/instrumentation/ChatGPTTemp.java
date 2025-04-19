@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ChatGPTTemp {
 	public static void testParameters() {
-
+		  String apiKey = "<PROVIDE_YOURS>";
         String endpoint = "https://api.openai.com/v1/chat/completions";
 
         String jsonInputString = "{\n" +
@@ -32,7 +32,7 @@ public class ChatGPTTemp {
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Authorization", "Bearer " + key);
+            conn.setRequestProperty("Authorization", "Bearer " + apiKey);
 
             try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
