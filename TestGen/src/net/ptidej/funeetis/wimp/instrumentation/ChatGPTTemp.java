@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ChatGPTTemp {
 	public static void testParameters() {
-        String apiKey = "<YOUR-KEY>";
+        String apiKey = "";
         String endpoint = "https://api.openai.com/v1/chat/completions";
 
         String jsonInputString = "{\n" +
