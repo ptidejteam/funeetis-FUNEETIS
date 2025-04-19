@@ -12,7 +12,7 @@ import org.json.JSONArray;
 public class chatGPT {
 	public static String getResponse(String message) {
 		String url = "https://api.openai.com/v1/chat/completions";
-        String apiKey = "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";
+        String apiKey = "<YOUR-KEY>";
         String model = "gpt-4o-mini";
         try {
             URL obj = new URL(url);
