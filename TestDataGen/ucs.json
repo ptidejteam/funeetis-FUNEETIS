@@ -1,0 +1,63 @@
+{
+    "bounded_flows": [{
+        "postconditions": [{"Execution_status": "WHEEL_MOVE_FINISHED"}],
+        "steps": [
+            {"1": "IF CloudApp RECEIVES no heartrate data FROM SmartPhone THEN"},
+            {"2": "CloudApp SENDS ROTATE command To Buddy with angle=50 and speed=30 Over WebSocket"},
+            {"3": "Buddy SETS EnableWheels with leftWheel=1 and rightWheel=1 "},
+            {"4": "Buddy ROTATES at specified angle and speed"},
+            {"5": "Buddy SENDS ROTATE status to CloudApp with execution_status=WHEEL_MOVE_FINISHED Over WebSocket"},
+            {"6": "CloudApp RECEIVES ROTATE execution status from Buddy Over WebSocket"},
+            {"7": "ENDIF"}
+        ]
+    }],
+    "basic_Flow": {
+        "postconditions": [{"Execution_status": "WHEEL_MOVE_FINISHED"}],
+        "steps": [
+            {"1": "Fitbit SENDS heart data to SmartPhone with heartrate=80 bpm Over HTTP"},
+            {"2": "SmartPhone RECEIVES the heartrate data From Fitbit"},
+            {"3": "SmartPhone SENDS heart data with heartrate=80 bpm to CloudApp over WebSocket"},
+            {"4": "CloudApp RECEIVES heartrate data FROM fitbit Over HTTP"},
+            {"5": "CloudApp CHECKS THAT heartrate is between 60 and 100 bpm"},
+            {"6": "CloudApp SENDS MOVE command to Buddy with distance=1 and speed=1 Over WebSocket"},
+            {"7": "Buddy RECEIVES MOVE command from CloudApp"},
+            {"8": "Buddy SETS EnableWheels with leftWheel=1 and rightWheel=1"},
+            {"9": "Buddy MOVES at specified distance and speed"},
+            {"10": "Buddy SENDS MOVE status to CloudApp with execution_status=WHEEL_MOVE_FINISHED Over WebSocket"},
+            {"11": "CloudApp RECEIVES MOVE execution status from Buddy Over WebSocket"}
+        ]
+    },
+    "preconditions": [
+        {"EnableWheels": "0"},
+        {"Mood": "1"}
+    ],
+    "name": "fitbit sends data and buddy moves",
+    "specific_flows": [
+        {
+            "postconditions": [
+                {"Execution_status": "NOK"},
+                {"Dog": "Black"}
+            ],
+            "steps": [
+                {"1": "IF EnableWheels is not set to TRUE THEN"},
+                {"2": "Buddy SETS execution_status to NOK"},
+                {"3": "Buddy SENDS EnableWheel status to cloudApp with execution_status=NOK Over WebSocket"},
+                {"4": "cloudApp RECEIVES execution status from Buddy Over WebSocket"},
+                {"5": "ENDIF"}
+            ]
+        },
+        {
+            "postconditions": [
+                {"Execution_status": "NOK"},
+                {"EnableWheel": "NOK"}
+            ],
+            "steps": [
+                {"1": "IF EnableWheels is not set to TRUE THEN"},
+                {"2": "Buddy SETS execution_status to NOK"},
+                {"3": "Buddy SENDS EnableWheel status to cloudApp with execution_status=NOK over WebSocket"},
+                {"4": "CloudApp RECEIVES execution status from Buddy Over WebSocket"},
+                {"5": "ENDIF"}
+            ]
+        }
+    ]
+}

@@ -1,0 +1,427 @@
+{
+	"nodes": [
+		{
+			"name": "Fitbit-V2",
+			"os": "FitbitOS",
+			"app": "HeartRateApp",
+			"pl": "nodeJS",
+			"network": {
+				"ip": "192.168.1.10",
+				"port": 8080
+			},
+			"dataFlow": [
+				{
+					"nodeId": "Glaxy-S10",
+					"interactionType": "send",
+					"protocol": "WebSocket",
+					"data": "heartRate"
+				}
+			],
+			"codeConstruct": {
+				"moduleOrClass": {
+					"name": "HeartSensor",
+					"methodOrFunction": [
+						{
+							"name": "getHrData",
+							"description": "Retrieves the current heart rate data from the sensor.",
+							"inputs": [
+								{
+									"paramName": "requestedData",
+									"paramType": "Integer",
+									"description": "Requested Data by indicating 1 for heart rate data, 2 for geolocation data",
+									"testData": 1
+								}
+							],
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "Sensor is not responding."
+									}
+								]
+							},
+							"returns": {
+								"type": "String",
+								"description": "Returns heart rate data as a formatted string."
+							}
+						},
+						{
+							"name": "sendHrData",
+							"description": "Sends heart rate data to a connected smartphone.",
+							"inputs": [
+								{
+									"paramName": "hrRateData",
+									"paramType": "Integer",
+									"description": "Heart rate data to be sent.",
+									"testData": 85
+								}
+							],
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "Failed to send data due to network issues."
+									}
+								]
+							},
+							"returns": {
+								"type": "void",
+								"description": "Void means no return value."
+							}
+						}
+						
+					]
+				}
+			}
+		},
+		{
+			"name": "Galaxy-S10",
+			"os": "Android",
+			"app": "HeartDataApp",
+			"pl": "Java",
+			"network": {
+				"ip": "192.168.1.20",
+				"port": 9090
+			},
+			"dataFlow": [
+				{
+					"nodeId": "WIMP-APP",
+					"interactionType": "receive",
+					"protocol": "WebSocket",
+					"data": "heartRate"
+				}
+			],
+			"codeConstruct": {
+				"moduleOrClass": {
+					"name": "WIMP",
+					"methodOrFunction": [
+						{
+							"name": "getHeartRateData",
+							"description": "Retrieves heart rate data received from the Fitbit device.",
+							"inputs": [
+								{
+									"paramName": "hrRateData",
+									"paramType": "Integer",
+									"description": "Heart rate data as an integer representing beats per minute.",
+									"testData": 60
+								}
+							],
+							"returns": {
+								"type": "String",
+								"description": "Returns the heart rate data formatted as a string."
+							},
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "DataFormatException",
+										"message": "Invalid data format received."
+									},
+									{
+										"type": "Exception",
+										"message": "Error in network communication."
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "WIMP-App",
+			"os": "RaspberryPiOS",
+			"app": "WIMPApp",
+			"pl": "nodeJS",
+			"network": {
+				"ip": "192.168.1.10",
+				"port": 8080
+			},
+			"dataFlow": [
+				{
+					"nodeId": "Buddy",
+					"interactionType": "send",
+					"protocol": "WebSocket",
+					"data": "heartRate"
+				}
+			],
+			"codeConstruct": {
+				"moduleOrClass": {
+					"name": "WIMPApp",
+					"methodOrFunction": [
+						{
+							"name": "buddyMove",
+							"description": "Commands Buddy to move according to the specified command string",
+							"inputs": [
+								{
+									"paramName": "distance",
+									"paramType": "float",
+									"description": "Distance in meter (m) to be covered",
+									"testData": 1.2
+								},
+								{
+									"paramName": "speed",
+									"paramType": "float",
+									"description": "Speed for the buddy to move",
+									"testData": 1.0
+								}
+							],
+							"returns": {
+								"type": "String",
+								"description": "Confirmation message of Buddy movement"
+							},
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "The command provided is not recognized"
+									}
+								]
+							}
+						},
+						{
+							"name": "buddyRotate",
+							"description": "Commands Buddy to rotate based on the input command",
+							"inputs": [
+								{
+									"paramName": "angle",
+									"paramType": "float",
+									"description": "Rotation angle in degrees to be covered",
+									"testData": 90
+								},
+								{
+									"paramName": "speed",
+									"paramType": "float",
+									"description": "Speed for the buddy to rotate",
+									"testData": 15.0
+								}
+							],
+							"returns": {
+								"type": "String",
+								"description": "Confirmation message of Buddy's rotation"
+							},
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "The command provided is invalid or not recognized"
+									}
+								]
+							}
+						},
+						{
+							"name": "enableWheels",
+							"description": "Enables or disables Buddy's wheels based on the command",
+							"inputs": [
+								{
+									"paramName": "enableWheels",
+									"paramType": "Integer",
+									"description": "Command to enable or disable wheels",
+									"testData": 1
+								}
+							],
+							"returns": {
+								"type": "String",
+								"description": "Status of Buddy's wheels after processing the command"
+							},
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "There was a hardware issue affecting the wheels"
+									}
+								]
+							}
+						},
+						{
+							"name": "buddySpeak",
+							"description": "Commands Buddy to speak the provided word",
+							"inputs": [
+								{
+									"paramName": "speech",
+									"paramType": "String",
+									"description": "Phrase for Buddy to speak",
+									"testData": "Hello"
+								}
+							],
+							"returns": {
+								"type": "String",
+								"description": "Confirmation of Buddy speaking"
+							},
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "Buddy could not speak"
+									}
+								]
+							}
+						},
+						{
+							"name": "setMood",
+							"description": "Sets the mood of Buddy based on the integer value provided",
+							"inputs": [
+								{
+									"paramName": "mood",
+									"paramType": "Integer",
+									"description": "Mood indicator for Buddy",
+									"testData": 1
+								}
+							],
+							"returns": {
+								"type": "String",
+								"description": "Confirmation of Buddy's mood being set"
+							},
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "Invalid mood value"
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "Buddy",
+			"os": "Android",
+			"app": "BuddyApp",
+			"pl": "java",
+			"network": {
+				"ip": "192.168.1.10",
+				"port": 8080
+			},
+			"dataFlow": [
+				{
+					"nodeId": "WIMP-App",
+					"interactionType": "send",
+					"protocol": "WebSocket",
+					"data": "executionStatus"
+				}
+			],
+			"codeConstruct": {
+				"moduleOrClass": {
+					"name": "BuddyApp",
+					"methodOrFunction": [
+						{
+							"name": "buddyMove",
+							"description": "Moves Buddy a specified distance at a given speed",
+							"inputs": [
+								{
+									"paramName": "distance",
+									"paramType": "float",
+									"description": "The distance Buddy should move (in meters)",
+									"testData": 1
+								},
+								{
+									"paramName": "speed",
+									"paramType": "float",
+									"description": "The speed at which Buddy should move (in meters per second)",
+									"testData": 0.5
+								}
+							],
+							"returns": {
+								"type": "String",
+								"description": "Confirmation message of Buddy's movement"
+							},
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "Distance or speed parameters are out of allowed range"
+									}
+								]
+							}
+						},
+						{
+							"name": "buddyRotate",
+							"description": "Rotates Buddy to a specific angle at a specified speed",
+							"inputs": [
+								{
+									"paramName": "angle",
+									"paramType": "float",
+									"description": "The angle in degrees to which Buddy should rotate",
+									"testData": 90
+								},
+								{
+									"paramName": "speed",
+									"paramType": "float",
+									"description": "The speed of the rotation (degrees per second)",
+									"testData": 30
+								}
+							],
+							"returns": {
+								"type": "String",
+								"description": "Confirmation message of Buddy's rotation"
+							},
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "Angle or speed is invalid"
+									}
+								]
+							}
+						},
+						{
+							"name": "buddyEnableWheels",
+							"description": "Enables or disables Buddy's wheels based on the given command",
+							"inputs": [
+								{
+									"paramName": "leftWheel",
+									"paramType": "Integer",
+									"description": "Enable or disable the left wheel",
+									"testData": 1
+								},
+								{
+									"paramName": "rightWheel",
+									"paramType": "Integer",
+									"description": "Enable or disable the right wheel",
+									"testData": 1
+								}
+							],
+							"returns": {
+								"type": "String",
+								"description": "Status of the wheels' activation"
+							},
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "Failed to activate or deactivate the wheels due to a hardware issue"
+									}
+								]
+							}
+						},
+						{
+							"name": "buddySpeak",
+							"description": "Commands Buddy to speak the specified words",
+							"inputs": [
+								{
+									"paramName": "word",
+									"paramType": "String",
+									"description": "The word or phrase Buddy should speak",
+									"testData": "Hello"
+								}
+							],
+							"returns": {
+								"type": "String",
+								"description": "Confirmation that Buddy has spoken the word"
+							},
+							"errorHandling": {
+								"exceptions": [
+									{
+										"type": "Exception",
+										"message": "Buddy was unable to speak the provided word due to output issues"
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		}
+	]
+}

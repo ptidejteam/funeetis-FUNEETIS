@@ -1,0 +1,142 @@
+{
+  "1": {
+    "TC_ID": "TBD",
+    "name": "TBD",
+    "steps": [
+      {
+        "entity": "fitbit",
+        "operation": "sendHeartData",
+        "inputs": {
+          "heartrate": "80 bpm"
+        },
+        "target": {
+          "protocol": "http",
+          "name": "smartphone"
+        },
+        "expectations": {
+          "Execution_status": "WHEEL_MOVE_FINISHED"
+        }
+      },
+      {
+        "entity": "smartphone",
+        "operation": "sendHeartData",
+        "inputs": {
+          "heartrate": "80 bpm to cloudapp"
+        },
+        "target": {
+          "protocol": "websocket",
+          "name": "cloudapp"
+        },
+        "expectations": {
+          "Execution_status": "WHEEL_MOVE_FINISHED"
+        }
+      },
+      {
+        "entity": "cloudapp",
+        "operation": "sendMoveCommand",
+        "inputs": {
+          "distance": "1",
+          "speed": "1"
+        },
+        "target": {
+          "protocol": "websocket",
+          "name": "buddy"
+        },
+        "expectations": {
+          "Execution_status": "WHEEL_MOVE_FINISHED"
+        }
+      },
+      {
+        "entity": "buddy",
+        "operation": "sendMoveStatus",
+        "inputs": {
+          "execution_status": "wheel_move_finished"
+        },
+        "target": {
+          "protocol": "websocket",
+          "name": "cloudapp"
+        },
+        "expectations": {
+          "Execution_status": "WHEEL_MOVE_FINISHED"
+        }
+      }
+    ]
+  },
+  "2": {
+    "TC_ID": "TBD",
+    "name": "TBD",
+    "steps": [
+      {
+        "entity": "cloudapp",
+        "operation": "sendRotateCommand",
+        "inputs": {
+          "angle": "50",
+          "speed": "30"
+        },
+        "target": {
+          "protocol": "websocket",
+          "name": "buddy"
+        },
+        "expectations": {
+          "Execution_status": "WHEEL_MOVE_FINISHED"
+        }
+      },
+      {
+        "entity": "buddy",
+        "operation": "sendRotateStatus",
+        "inputs": {
+          "execution_status": "wheel_move_finished"
+        },
+        "target": {
+          "protocol": "websocket",
+          "name": "cloudapp"
+        },
+        "expectations": {
+          "Execution_status": "WHEEL_MOVE_FINISHED"
+        }
+      }
+    ]
+  },
+  "3": {
+    "TC_ID": "TBD",
+    "name": "TBD",
+    "steps": [
+      {
+        "entity": "buddy",
+        "operation": "sendEnablewheelStatus",
+        "inputs": {
+          "execution_status": "nok"
+        },
+        "target": {
+          "protocol": "websocket",
+          "name": "cloudapp"
+        },
+        "expectations": {
+          "Execution_status": "NOK",
+          "Dog": "Black"
+        }
+      }
+    ]
+  },
+  "4": {
+    "TC_ID": "TBD",
+    "name": "TBD",
+    "steps": [
+      {
+        "entity": "buddy",
+        "operation": "sendEnablewheelStatus",
+        "inputs": {
+          "execution_status": "nok"
+        },
+        "target": {
+          "protocol": "websocket",
+          "name": "cloudapp"
+        },
+        "expectations": {
+          "EnableWheel": "NOK",
+          "Execution_status": "NOK"
+        }
+      }
+    ]
+  }
+}

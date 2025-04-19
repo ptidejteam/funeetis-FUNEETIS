@@ -1,0 +1,12 @@
+net\ptidej\funeetis\testdatageneration\step3\TestData.class
+net\ptidej\funeetis\testdatageneration\step2\TestScenario.class
+net\ptidej\funeetis\testdatageneration\runner\TestDataGenerator.class
+net\ptidej\funeetis\testdatageneration\step3\Target.class
+net\ptidej\funeetis\testdatageneration\step1\FileToJsonConverter.class
+net\ptidej\funeetis\testdatageneration\step3\Inputs.class
+net\ptidej\funeetis\testdatageneration\step3\TestStep.class
+net\ptidej\funeetis\testdatageneration\step3\InteractionExtractor.class
+net\ptidej\funeetis\testdatageneration\step3\Preconditions.class
+net\ptidej\funeetis\testdatageneration\step3\ArtifactExtractor.class
+net\ptidej\funeetis\testdatageneration\step3\Expectation.class
+net\ptidej\funeetis\testdatageneration\step3\Payload.class
