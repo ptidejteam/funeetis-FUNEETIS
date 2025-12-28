@@ -1,0 +1,387 @@
+{
+"1": {
+"TC_ID": "TBD",
+"name": "RUCM-3 Basic Flow",
+"steps": [
+{
+"entity": "fitbit",
+"operation": "sendSensorReading",
+"inputs": {
+"heartrate": "75 bpm",
+"distance": "300",
+"timestamp": "TBD"
+},
+"target": {
+"protocol": "bluetooth",
+"name": "gateway"
+},
+"expectations": {
+"Data_buffer": "EMPTY",
+"Sync_status": "SYNCHRONIZED"
+}
+},
+{
+"entity": "gateway",
+"operation": "maintainBluetoothAndReceiveReading",
+"inputs": {
+"heartrate": "75 bpm",
+"distance": "300",
+"timestamp": "TBD",
+"bluetooth_connection": "active"
+},
+"target": {
+"protocol": "bluetooth",
+"name": "fitbit"
+},
+"expectations": {
+"Data_buffer": "EMPTY",
+"Sync_status": "SYNCHRONIZED"
+}
+},
+{
+"entity": "gateway",
+"operation": "checkNetworkConnectivity",
+"inputs": {
+"cloud_connectivity": "available"
+},
+"target": {
+"protocol": "internal",
+"name": "gateway"
+},
+"expectations": {
+"Data_buffer": "EMPTY",
+"Sync_status": "SYNCHRONIZED"
+}
+},
+{
+"entity": "gateway",
+"operation": "sendSensorData",
+"inputs": {
+"heartrate": "75 bpm",
+"distance": "300",
+"timestamp": "TBD"
+},
+"target": {
+"protocol": "http",
+"name": "cloud"
+},
+"expectations": {
+"Data_buffer": "EMPTY",
+"Sync_status": "SYNCHRONIZED"
+}
+},
+{
+"entity": "cloud",
+"operation": "validateAndStoreSensorData",
+"inputs": {
+"heartrate": "75 bpm",
+"distance": "300",
+"timestamp": "TBD"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Data_buffer": "EMPTY",
+"Sync_status": "SYNCHRONIZED"
+}
+},
+{
+"entity": "cloud",
+"operation": "sendAcknowledgement",
+"inputs": {
+"ack": "data_received"
+},
+"target": {
+"protocol": "http",
+"name": "gateway"
+},
+"expectations": {
+"Data_buffer": "EMPTY",
+"Sync_status": "SYNCHRONIZED"
+}
+},
+{
+"entity": "gateway",
+"operation": "receiveAcknowledgement",
+"inputs": {
+"ack": "data_received"
+},
+"target": {
+"protocol": "http",
+"name": "cloud"
+},
+"expectations": {
+"Data_buffer": "EMPTY",
+"Sync_status": "SYNCHRONIZED"
+}
+},
+{
+"entity": "cloud",
+"operation": "processForAbnormalConditions",
+"inputs": {
+"heartrate": "75 bpm",
+"distance": "300",
+"threshold_low_bpm": "60",
+"threshold_high_bpm": "100"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Data_buffer": "EMPTY",
+"Sync_status": "SYNCHRONIZED"
+}
+},
+{
+"entity": "gateway",
+"operation": "deleteTransmittedDataFromLocalBuffer",
+"inputs": {
+"deleted": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "gateway"
+},
+"expectations": {
+"Data_buffer": "EMPTY",
+"Sync_status": "SYNCHRONIZED"
+}
+}
+]
+},
+"2": {
+"TC_ID": "TBD",
+"name": "RUCM-3 Bounded Alternative Flow",
+"steps": [
+{
+"entity": "gateway",
+"operation": "detectConnectivityLoss",
+"inputs": {
+"cloud_connectivity": "lost"
+},
+"target": {
+"protocol": "internal",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "BUFFER_FLUSHED"
+}
+},
+{
+"entity": "gateway",
+"operation": "storeIncomingSensorDataInBuffer",
+"inputs": {
+"heartrate": "78 bpm",
+"distance": "350",
+"timestamp": "TBD",
+"buffered": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "BUFFER_FLUSHED"
+}
+},
+{
+"entity": "gateway",
+"operation": "notifyUserConnectivityLoss",
+"inputs": {
+"ui_message": "connectivity_lost"
+},
+"target": {
+"protocol": "internal",
+"name": "smartphone_screen"
+},
+"expectations": {
+"Execution_status": "BUFFER_FLUSHED"
+}
+},
+{
+"entity": "gateway",
+"operation": "periodicallyCheckConnectivity",
+"inputs": {
+"check_interval": "TBD",
+"cloud_connectivity": "restored"
+},
+"target": {
+"protocol": "internal",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "BUFFER_FLUSHED"
+}
+},
+{
+"entity": "gateway",
+"operation": "sendAllBufferedSensorData",
+"inputs": {
+"buffered_payload": [
+{
+"heartrate": "78 bpm",
+"distance": "350",
+"timestamp": "TBD"
+}
+],
+"buffered": "true"
+},
+"target": {
+"protocol": "http",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "BUFFER_FLUSHED"
+}
+},
+{
+"entity": "cloud",
+"operation": "receiveAndStoreBufferedSensorData",
+"inputs": {
+"buffered_payload": [
+{
+"heartrate": "78 bpm",
+"distance": "350",
+"timestamp": "TBD"
+}
+],
+"store_with_original_timestamps": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "BUFFER_FLUSHED"
+}
+},
+{
+"entity": "cloud",
+"operation": "sendAcknowledgement",
+"inputs": {
+"ack": "buffer_received"
+},
+"target": {
+"protocol": "http",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "BUFFER_FLUSHED"
+}
+},
+{
+"entity": "gateway",
+"operation": "receiveAcknowledgementAndClearBuffer",
+"inputs": {
+"ack": "buffer_received",
+"buffer_cleared": "true"
+},
+"target": {
+"protocol": "http",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "BUFFER_FLUSHED"
+}
+},
+{
+"entity": "gateway",
+"operation": "endif",
+"inputs": {
+"condition_closed": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "BUFFER_FLUSHED"
+}
+}
+]
+},
+"3": {
+"TC_ID": "TBD",
+"name": "RUCM-3 Specific Alternative Flow",
+"steps": [
+{
+"entity": "gateway",
+"operation": "ifBufferExceedsCapacity",
+"inputs": {
+"buffer_size": "TBD",
+"storage_capacity": "TBD",
+"condition_result": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "DATA_LOSS_REPORTED"
+}
+},
+{
+"entity": "gateway",
+"operation": "discardOldestBufferedEntries",
+"inputs": {
+"discard_policy": "oldest_first",
+"discarded_entries_count": "TBD"
+},
+"target": {
+"protocol": "internal",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "DATA_LOSS_REPORTED"
+}
+},
+{
+"entity": "gateway",
+"operation": "sendDataLossAlert",
+"inputs": {
+"alert": "data_loss",
+"details": "oldest_entries_discarded"
+},
+"target": {
+"protocol": "http",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "DATA_LOSS_REPORTED"
+}
+},
+{
+"entity": "cloud",
+"operation": "receiveAlertAndLogDataLossEvent",
+"inputs": {
+"alert": "data_loss",
+"logged": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "DATA_LOSS_REPORTED"
+}
+},
+{
+"entity": "gateway",
+"operation": "endif",
+"inputs": {
+"condition_closed": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "DATA_LOSS_REPORTED"
+}
+}
+]
+}
+}

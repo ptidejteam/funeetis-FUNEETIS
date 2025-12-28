@@ -1,0 +1,528 @@
+{
+"1": {
+"TC_ID": "TBD",
+"name": "RUCM-2 Basic Flow",
+"steps": [
+{
+"entity": "fitbit",
+"operation": "sendSensorData",
+"inputs": {
+"heartrate": "110 bpm",
+"distance": "1000",
+"timestamp": "TBD"
+},
+"target": {
+"protocol": "bluetooth",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "gateway",
+"operation": "sendSensorDataPayload",
+"inputs": {
+"heartrate": "110 bpm",
+"distance": "1000",
+"timestamp": "TBD"
+},
+"target": {
+"protocol": "http",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "cloud",
+"operation": "validateSensorData",
+"inputs": {
+"heartrate": "110 bpm",
+"heartrate_feasible_range": "TBD",
+"distance": "1000",
+"distance_constraint": "non_negative"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "cloud",
+"operation": "detectAbnormalHeartRate",
+"inputs": {
+"heartrate": "110 bpm",
+"threshold_low_bpm": "60",
+"threshold_high_bpm": "100"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "cloud",
+"operation": "selectDestinationAndMessage",
+"inputs": {
+"patient_context": "TBD",
+"destination_office": "Office-5",
+"message": "TBD"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "cloud",
+"operation": "sendInterventionCommand",
+"inputs": {
+"destination_office": "Office-5",
+"message": "TBD"
+},
+"target": {
+"protocol": "websocket",
+"name": "buddy"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "buddy",
+"operation": "receiveInterventionCommand",
+"inputs": {
+"destination_office": "Office-5",
+"message": "TBD"
+},
+"target": {
+"protocol": "websocket",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "buddy",
+"operation": "setNavigationTargetAndMessage",
+"inputs": {
+"navigation_target": "Office-5",
+"message_payload": "TBD"
+},
+"target": {
+"protocol": "internal",
+"name": "buddy"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "buddy",
+"operation": "moveToDestination",
+"inputs": {
+"destination_office": "Office-5",
+"speed": "TBD"
+},
+"target": {
+"protocol": "internal",
+"name": "environment"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "buddy",
+"operation": "rotateKnockSpeak",
+"inputs": {
+"rotation": "as_needed",
+"knock": "true",
+"speak_message": "TBD"
+},
+"target": {
+"protocol": "internal",
+"name": "environment"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "buddy",
+"operation": "sendInterventionExecutionStatus",
+"inputs": {
+"execution_status": "message_delivered"
+},
+"target": {
+"protocol": "websocket",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+},
+{
+"entity": "cloud",
+"operation": "receiveExecutionStatus",
+"inputs": {
+"execution_status": "message_delivered"
+},
+"target": {
+"protocol": "websocket",
+"name": "buddy"
+},
+"expectations": {
+"Execution_status": "MESSAGE_DELIVERED"
+}
+}
+]
+},
+"2": {
+"TC_ID": "TBD",
+"name": "RUCM-2 Bounded Alternative Flow",
+"steps": [
+{
+"entity": "fitbit",
+"operation": "sendSensorData",
+"inputs": {
+"heartrate": "80 bpm",
+"distance": "500",
+"timestamp": "TBD"
+},
+"target": {
+"protocol": "bluetooth",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "NO_INTERVENTION"
+}
+},
+{
+"entity": "gateway",
+"operation": "sendSensorDataPayload",
+"inputs": {
+"heartrate": "80 bpm",
+"distance": "500",
+"timestamp": "TBD"
+},
+"target": {
+"protocol": "http",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "NO_INTERVENTION"
+}
+},
+{
+"entity": "cloud",
+"operation": "validateSensorData",
+"inputs": {
+"heartrate": "80 bpm",
+"heartrate_feasible_range": "TBD",
+"distance": "500",
+"distance_constraint": "non_negative"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "NO_INTERVENTION"
+}
+},
+{
+"entity": "cloud",
+"operation": "ifHeartRateWithinNormalRange",
+"inputs": {
+"heartrate": "80 bpm",
+"threshold_low_bpm": "60",
+"threshold_high_bpm": "100",
+"condition_result": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "NO_INTERVENTION"
+}
+},
+{
+"entity": "cloud",
+"operation": "logSensorDataAndUpdateDashboards",
+"inputs": {
+"heartrate": "80 bpm",
+"distance": "500",
+"timestamp": "TBD"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "NO_INTERVENTION"
+}
+},
+{
+"entity": "cloud",
+"operation": "sendAcknowledgement",
+"inputs": {
+"ack": "data_logged_no_intervention"
+},
+"target": {
+"protocol": "http",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "NO_INTERVENTION"
+}
+},
+{
+"entity": "gateway",
+"operation": "receiveAcknowledgement",
+"inputs": {
+"ack": "data_logged_no_intervention"
+},
+"target": {
+"protocol": "http",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "NO_INTERVENTION"
+}
+},
+{
+"entity": "cloud",
+"operation": "endif",
+"inputs": {
+"condition_closed": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "NO_INTERVENTION"
+}
+}
+]
+},
+"3": {
+"TC_ID": "TBD",
+"name": "RUCM-2 Specific Alternative Flow",
+"steps": [
+{
+"entity": "fitbit",
+"operation": "sendSensorData",
+"inputs": {
+"heartrate": "55 bpm",
+"distance": "200",
+"timestamp": "TBD"
+},
+"target": {
+"protocol": "bluetooth",
+"name": "gateway"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "gateway",
+"operation": "sendSensorDataPayload",
+"inputs": {
+"heartrate": "55 bpm",
+"distance": "200",
+"timestamp": "TBD"
+},
+"target": {
+"protocol": "http",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "cloud",
+"operation": "validateSensorData",
+"inputs": {
+"heartrate": "55 bpm",
+"heartrate_feasible_range": "TBD",
+"distance": "200",
+"distance_constraint": "non_negative"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "cloud",
+"operation": "detectAbnormalHeartRate",
+"inputs": {
+"heartrate": "55 bpm",
+"threshold_low_bpm": "60",
+"threshold_high_bpm": "100"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "cloud",
+"operation": "selectDestinationAndMessage",
+"inputs": {
+"patient_context": "TBD",
+"destination_office": "Office-3",
+"message": "TBD"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "cloud",
+"operation": "sendInterventionCommand",
+"inputs": {
+"destination_office": "Office-3",
+"message": "TBD"
+},
+"target": {
+"protocol": "websocket",
+"name": "buddy"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "buddy",
+"operation": "receiveInterventionCommand",
+"inputs": {
+"destination_office": "Office-3",
+"message": "TBD"
+},
+"target": {
+"protocol": "websocket",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "buddy",
+"operation": "setNavigationTargetAndMessage",
+"inputs": {
+"navigation_target": "Office-3",
+"message_payload": "TBD"
+},
+"target": {
+"protocol": "internal",
+"name": "buddy"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "buddy",
+"operation": "ifObstacleOrCannotReachDestination",
+"inputs": {
+"destination_office": "Office-3",
+"condition_result": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "buddy"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "buddy",
+"operation": "stopAndSendErrorStatus",
+"inputs": {
+"error_status": "failed_delivery",
+"reason": "obstacle_or_unreachable"
+},
+"target": {
+"protocol": "websocket",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "cloud",
+"operation": "receiveErrorStatusAndNotifyStakeholders",
+"inputs": {
+"error_status": "failed_delivery",
+"notification": "stakeholders_notified"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "cloud",
+"operation": "sendReturnCommand",
+"inputs": {
+"command": "return_to_charging_dock"
+},
+"target": {
+"protocol": "websocket",
+"name": "buddy"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+},
+{
+"entity": "cloud",
+"operation": "endif",
+"inputs": {
+"condition_closed": "true"
+},
+"target": {
+"protocol": "internal",
+"name": "cloud"
+},
+"expectations": {
+"Execution_status": "FAILED_DELIVERY"
+}
+}
+]
+}
+}
