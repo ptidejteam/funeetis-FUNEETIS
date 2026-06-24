@@ -44,7 +44,7 @@ FUNEETIS consists of six main steps that transform structured use case specifica
 | Step 6 | Manual execution setup / validation        | Manual       |
 
 
-## TestDataGen
+**## TestDataGen**
 
 `TestDataGen` is the first main module of FUNEETIS. It is responsible for transforming a structured use case specification into test data that can later be used by `TestGen` to generate executable tests.
 
