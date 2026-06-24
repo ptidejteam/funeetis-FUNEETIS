@@ -42,7 +42,7 @@ FUNEETIS consists of six main steps that transform structured use case specifica
 | Step 4 | Manual refinement / preparation            | Manual       |
 | Step 5 | Generate executable test cases             | TestGen      |
 | Step 6 | Manual execution setup / validation        | Manual       |
-
+| Step 7 | Generate instrumentation code/             | TestGen      |
 
 ## TestDataGen
 
