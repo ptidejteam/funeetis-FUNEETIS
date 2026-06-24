@@ -143,3 +143,51 @@ This file contains the generated test data organized by scenario.
 | Step 1 | `ucs.txt` | `ucs.json` | Converts the use case specification into JSON |
 | Step 2 | `ucs.json` | `scenarios.json` | Extracts test scenarios |
 | Step 3 | `scenarios.json` | `testdata.json` | Extracts test artifacts and generates test data |
+
+
+## TestGen
+
+`TestGen` is the second main module of FUNEETIS. It is responsible for generating executable test cases from the test data produced by `TestDataGen` and the system under test description.
+
+`TestGen` covers **Step 5** of the FUNEETIS workflow.
+
+### Step 5: Test Case Generation
+
+Step 5 takes the generated test data and the system description, then produces executable Java test cases.
+
+**Input**
+
+```text
+testdata.json
+sut.json
+```
+
+**Output**
+
+```text
+GeneratedTests.java
+```
+
+### Main Files
+
+| File | Role |
+|------|------|
+| `OperationNormalizer.java` | Normalizes operation names and extracts the operation intent |
+| `TestGenerator.java` | Generates JUnit test cases from `testdata.json` |
+| `sut.json` | Describes the system under test |
+| `testdata.json` | Contains the generated test data from `TestDataGen` |
+| `GeneratedTests.java` | Contains the generated executable tests |
+
+### How It Works
+
+1. `TestGenerator` reads `testdata.json`.
+2. It identifies the entities involved in each test scenario.
+3. It matches each operation with the corresponding SUT method.
+4. It generates JUnit test methods.
+5. The generated tests are saved in `GeneratedTests.java`.
+
+### Summary
+
+| Step | Input | Output | Description |
+|------|-------|--------|-------------|
+| Step 5 | `testdata.json`, `sut.json` | `GeneratedTests.java` | Generates executable Java test cases |
