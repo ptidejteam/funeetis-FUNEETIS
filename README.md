@@ -31,43 +31,14 @@ FUNEETIS/
 └── README.md
 
 
-## FUNEETIS Workflow
+## FUNEETIS Steps
 
 FUNEETIS consists of six main steps that transform structured use case specifications into executable end-to-end IoT test cases.
-
-| Step | Description | Type | Module |
-|------|-------------|------|--------|
-| 1 | Parse use case specifications and extract relevant information | Automated | TestDataGen |
-| 2 | Extract test scenarios from use case specifications | Automated | TestDataGen |
-| 3 | Generate test data for the extracted scenarios | Automated | TestDataGen |
-| 4 | Review and refine generated artifacts when needed | Manual | N/A |
-| 5 | Generate executable test cases using the system description and generated test data | Automated | TestGen |
-| 6 | Configure, execute, and validate generated tests in the target environment | Manual | N/A |
-
-### Workflow Overview
-
-```text
-Use Case Specifications
-          │
-          ▼
-    TestDataGen
-   (Steps 1–3)
-          │
-          ▼
-    testdata.json
-          │
-          ▼
-  Manual Refinement
-      (Step 4)
-          │
-          ▼
-       TestGen
-      (Step 5)
-          │
-          ▼
- Executable Tests
-          │
-          ▼
- Test Execution &
-   Validation
-    (Step 6)
+| Step   | Description                                | Supported by |
+| ------ | ------------------------------------------ | ------------ |
+| Step 1 | Parse use case specifications              | TestDataGen  |
+| Step 2 | Extract scenarios and relevant information | TestDataGen  |
+| Step 3 | Generate test data                         | TestDataGen  |
+| Step 4 | Manual refinement / preparation            | Manual       |
+| Step 5 | Generate executable test cases             | TestGen      |
+| Step 6 | Manual execution setup / validation        | Manual       |
