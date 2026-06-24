@@ -147,7 +147,7 @@ This file contains the generated test data organized by scenario.
 
 ## TestGen
 
-`TestGen` is the second main module of FUNEETIS. It is responsible for generating executable test cases from the test data produced by `TestDataGen` and the system under test description.
+`TestGen` is the second main module of FUNEETIS. It is responsible for generating executable test cases from the test data produced by `TestDataGen` and the system under test description file.
 
 `TestGen` covers **Step 5** of the FUNEETIS workflow.
 
