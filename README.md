@@ -44,7 +44,7 @@ FUNEETIS consists of six main steps that transform structured use case specifica
 | Step 6 | Manual execution setup / validation        | Manual       |
 
 
-### TestDataGen
+# **TestDataGen**
 
 `TestDataGen` is the first main module of FUNEETIS. It is responsible for transforming a structured use case specification into test data that can later be used by `TestGen` to generate executable tests.
 
@@ -52,15 +52,11 @@ FUNEETIS consists of six main steps that transform structured use case specifica
 
 ### Overview
 
-```mermaid
 flowchart TD
-    A[ucs.txt] --> B[Step 1: Convert Use Case Text to JSON]
-    B --> C[ucs.json]
-    C --> D[Step 2: Extract Test Scenarios]
-    D --> E[scenarios.json]
-    E --> F[Step 3: Extract Test Artifacts]
-    F --> G[testdata.json]
-```
+    A[ucs.txt] --> B[Step 1: Convert Use Case Text to JSON]. Output is ucs.json
+    B[ucs.json] --> C[Step 2: Extract Test Scenarios]. Output is scenarios.json
+    D[scenarios] --> E[Step 3: Extract Test Artifacts]. Output is testdata.json
+
 
 ### Step 1: Use Case Text to JSON
 
