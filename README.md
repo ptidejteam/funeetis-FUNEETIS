@@ -191,3 +191,52 @@ GeneratedTests.java
 | Step | Input | Output | Description |
 |------|-------|--------|-------------|
 | Step 5 | `testdata.json`, `sut.json` | `GeneratedTests.java` | Generates executable Java test cases |
+
+
+## Instrumentation
+
+The `instrumentation` package supports **Step 7** of FUNEETIS.  
+This step generates instrumentation code for the System Under Test (SUT).
+
+In this repository, the current implementation is customized for the **WIMP system**.
+
+### Step 7: Instrumentation Code Generation
+
+Step 7 uses the SUT description to produce a customized prompt for generating instrumentation code.
+
+**Input**
+
+```text
+sut.json
+prompt template
+```
+
+**Output**
+
+```text
+Instrumentation code
+```
+
+### Main Files
+
+| File | Role |
+|------|------|
+| `SUT.java` | Reads `sut.json`, extracts SUT information, and builds the customized prompt |
+| `GeneratePromptForChatGPT.java` | Supports prompt generation |
+| `chatGPT.java` | Sends the generated prompt to ChatGPT |
+| `ChatGPTTemp.java` | Stores or supports prompt/template-related content |
+| `ModuleOrClass.java` | Represents modules/classes and their methods/functions |
+
+### How It Works
+
+1. `SUT.java` reads the system description from `sut.json`.
+2. It extracts information about each node, including name, operating system, application, programming language, network information, and code constructs.
+3. FUNEETIS combines this information with a prompt template.
+4. A customized prompt is generated for each SUT node.
+5. The prompt is executed to produce instrumentation code.
+
+### Summary
+
+| Step | Input | Output | Description |
+|------|-------|--------|-------------|
+| Step 7 | `sut.json`, prompt template | Instrumentation code | Generates instrumentation code for the SUT |
